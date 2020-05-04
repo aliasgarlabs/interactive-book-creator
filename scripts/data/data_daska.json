@@ -1,0 +1,146 @@
+{
+  "glyphs": [
+    {
+      "id": 1,
+      "page_number": 5,
+      "min_x": 45,
+      "min_y": 67,
+      "max_x": 654,
+      "max_y": 950
+    },
+    {
+      "id": 2,
+      "page_number": 6,
+      "min_x": 36,
+      "min_y": 66,
+      "max_x": 661,
+      "max_y": 382
+    },
+    {
+      "id": 3,
+      "page_number": 6,
+      "min_x": 34,
+      "min_y": 383,
+      "max_x": 665,
+      "max_y": 902
+    },
+    {
+      "id": 4,
+      "page_number": 7,
+      "min_x": 36,
+      "min_y": 64,
+      "max_x": 661,
+      "max_y": 299
+    },
+    {
+      "id": 5,
+      "page_number": 7,
+      "min_x": 38,
+      "min_y": 296,
+      "max_x": 654,
+      "max_y": 634
+    },
+    {
+      "id": 6,
+      "page_number": 7,
+      "min_x": 40,
+      "min_y": 634,
+      "max_x": 657,
+      "max_y": 959
+    },
+    {
+      "id": 7,
+      "page_number": 8,
+      "min_x": 38,
+      "min_y": 72,
+      "max_x": 657,
+      "max_y": 243
+    },
+    {
+      "id": 8,
+      "page_number": 8,
+      "min_x": 37,
+      "min_y": 239,
+      "max_x": 658,
+      "max_y": 628
+    },
+    {
+      "id": 9,
+      "page_number": 8,
+      "min_x": 39,
+      "min_y": 630,
+      "max_x": 660,
+      "max_y": 965
+    },
+    {
+      "id": 10,
+      "page_number": 9,
+      "min_x": 34,
+      "min_y": 62,
+      "max_x": 655,
+      "max_y": 573
+    }
+  ],
+  "tracks": [
+    {
+      "id": 1,
+      "page_number": 5,
+      "start_time": 0,
+      "end_time": 71.915387
+    },
+    {
+      "id": 2,
+      "page_number": 6,
+      "start_time": 71.915387,
+      "end_time": 96.873448
+    },
+    {
+      "id": 3,
+      "page_number": 6,
+      "start_time": 96.873448,
+      "end_time": 137.216852
+    },
+    {
+      "id": 4,
+      "page_number": 7,
+      "start_time": 137.216852,
+      "end_time": 159.991954
+    },
+    {
+      "id": 5,
+      "page_number": 7,
+      "start_time": 159.991954,
+      "end_time": 194.104891
+    },
+    {
+      "id": 6,
+      "page_number": 7,
+      "start_time": 194.104891,
+      "end_time": 235.215557
+    },
+    {
+      "id": 7,
+      "page_number": 8,
+      "start_time": 235.215557,
+      "end_time": 254.029947
+    },
+    {
+      "id": 8,
+      "page_number": 8,
+      "start_time": 254.029947,
+      "end_time": 303.474468
+    },
+    {
+      "id": 9,
+      "page_number": 8,
+      "start_time": 303.474468,
+      "end_time": 348.997219
+    },
+    {
+      "id": 10,
+      "page_number": 9,
+      "start_time": 348.997219,
+      "end_time": 439.211053
+    }
+  ]
+}

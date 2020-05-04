@@ -1,0 +1,201 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="./../assets/icon/app/144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Interactive Book Creator</title>
+</head>
+
+<body style="background-color:black;">
+  <div>
+    <div id="c1">
+      <div id="imageholder">
+        <div id="horizontal"></div>
+        <div id="vertical"></div>
+      <img id="image" style="height: 100%; margin:auto; ">
+      </div>
+    </div>
+    <div id="c2">
+      <div class="overlay">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <button type="button" class="btn btn-outline" onclick="openList()"><i class="fas fa-arrow-left"></i></button>
+          <a class="navbar-brand" href="#">Book Digitizer</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="loadFile()">Load</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="saveFile()">Save</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="generateGlyphDB()">Generate Glyph DB</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="generateTrackDB()">Generate Track DB</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="mailto:sherullahapp@gmail.com" style="font-size: 18px;">Feedback</a>
+              </li>
+              <li class="nav-item">
+
+              </li>
+            </ul>
+          </div>
+        </nav>
+<div id="fileUpload" style="display: none;">
+  <input type="file" id="myFile" onchange="onFileUpload()">
+</div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+              <button type="button" id="pageNo" class="btn btn-link" onclick="gotopagePrompt()">Page 1</button>
+            </div>
+            <div class="col-4">
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="overlay">
+        <div class="row">
+          <div class="col-md-3">
+            <h5 id="tracking" style="color: white;">State: Not Tracking</h5>
+          </div>
+          <div class="col-md-3">
+            <h5 id="coordinates" style="color: white;">Coordinates: 0​</h5>
+          </div>
+          <div class="col-md-3">
+            <h5 id="trackId" style="color: white;">Current Track ID: 0</h5>
+
+        </div>
+          <div class="col-md-3">
+            <div class="dropdown">
+              <button id="speed" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Speed 1.0x
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" onclick="changeSpeed(0.5)" href="#">0.5x</a>
+                <a class="dropdown-item" onclick="changeSpeed(1.0)" href="#">1.0x</a>
+                <a class="dropdown-item" onclick="changeSpeed(1.25)" href="#">1.25x</a>
+                <a class="dropdown-item" onclick="changeSpeed(1.50)" href="#">1.50x</a>
+                <a class="dropdown-item" onclick="changeSpeed(1.75)" href="#">1.75x</a>
+                <a class="dropdown-item" onclick="changeSpeed(2.0)" href="#">2.0x</a>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row" style="display: flex; align-items: center; margin: 10;">
+          <audio id="audio" onloadedmetadata="resetSeekbar()" ontimeupdate="updateSeekbar()"></audio>
+
+          <div id="currentTime" class="col-2" style="color:white;">
+            00:00
+          </div>
+          <div class="col-8">
+            <input id="seekbar" type="range" name="rng" min="0" step="0.25" value="0" onchange="seek()"
+              style="width: 100%">
+          </div>
+          <div id="duration" class="col-2" style="color:white;">
+            00:00
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+
+            <div>
+              <button type="button" class="btn btn-secondary action" onclick="setEndTimeForCurrentTrackID()">Set end time</button>
+              <button type="button" class="btn btn-secondary action" onclick="deleteAudioMarker()">Reset last end time</button>
+              <button type="button" class="btn btn-secondary action" onclick="deleteRecord()">Delete last record</button>
+            </div>
+
+          </div>
+                    <div class="col-2">
+               <audio id="beep" src="../assets/audio/fat.ogg" autoplay="false"></audio>
+            <div>
+              <button type="button" class="btn btn-secondary action" onclick="minus5secs()">-5 secs</button>
+            </div>
+          </div>
+          <div class="col-2">
+            <div>
+              <button id="playerState" type="button" class="btn btn-secondary action"
+                onclick="togglePlayback()">Play</button>
+            </div>
+          </div>
+          <div class="col-2">
+            <div>
+
+              <button type="button" class="btn btn-secondary action" onclick="add5secs()">+5 secs</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="overlay ">
+        <div class="row">
+          <div class="col-12">
+            <table id="table">
+              <tr>
+                <th>
+                  id
+                </th>
+                <th>
+                  page
+                </th>
+                <th>
+                  min_x
+                </th>
+                <th>
+                  min_y
+                </th>
+                <th>
+                  max_x
+                </th>
+                <th>
+                  max_y
+                </th>
+                <th>
+                  start_time
+                </th>
+                <th>
+                  end_time
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>​
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

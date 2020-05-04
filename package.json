@@ -1,0 +1,23 @@
+{
+  "name": "book-digitizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliasgarlabs/interactive-book-creator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aliasgarlabs/interactive-book-creator/issues"
+  },
+  "homepage": "https://github.com/aliasgarlabs/interactive-book-creator#readme",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "shelljs": "^0.8.4"
+  }
+}

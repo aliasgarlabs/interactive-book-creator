@@ -1,0 +1,58 @@
+.overlay {
+  background-color: #343A40;
+  text-align: center;
+}
+
+#imageholder div{ background-color:black;position:absolute; }
+#imageholder{position:relative;display:inline-block;overflow:hidden; }
+#horizontal{width:100%;height:1px;}
+#vertical{width:1px;height:100%;}
+
+table {
+  border-collapse: collapse;
+  display: table;
+  width: 100%;
+  overflow:auto;
+}
+
+
+table, th, td {
+  margin-top: 16;
+  border: 1px solid black;
+  color:#5D7B9D
+}
+
+.top {
+  top: 0%
+}
+
+.control {
+  padding: 5;
+  height: 4em;
+}
+#wrapper{
+  overflow:auto;
+}
+
+.action {
+  height: 4em;
+  width: 6em;
+}
+
+img {
+  background: url(https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif) no-repeat center;
+}
+
+.fa-arrow-left {
+  color: white;
+}
+
+#c1 {
+  float: left;
+  background: blue;
+}
+
+#c2 {
+  background: green;
+  float: center;
+}
