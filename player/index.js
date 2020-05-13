@@ -39,6 +39,76 @@ var canvas = document.createElement('canvas'),
 
 initializeApp();
 
+let x = {
+  "id": 6,
+  "name": "Mohta Bawisa",
+  "segments": [
+    {
+      "id": 1,
+      "name": "Qadail Hawaij",
+      "start_page": 1,
+      "end_page": 1
+    },
+    {
+      "id": 2,
+      "name": "Rasullah SAW na janaab ni taraf hadiyat",
+      "start_page": 2,
+      "end_page": 3
+    },
+    {
+      "id": 3,
+      "name": "Moulana Ali AS na janaab ni taraf hadiyat",
+      "start_page": 4,
+      "end_page": 8
+    },
+    {
+      "id": 4,
+      "name": "Moulatana Fatema AS na janaab ni taraf hadiyat",
+      "start_page": 9,
+      "end_page": 10
+    },
+    {
+      "id": 5,
+      "name": "Imam Hasan AS na janaab ni taraf hadiyat",
+      "start_page": 10,
+      "end_page": 12
+    },
+    {
+      "id": 6,
+      "name": "Imam Husain AS na janaab ni taraf hadiyat",
+      "start_page": 12,
+      "end_page": 15
+    },
+    {
+      "id": 7,
+      "name": "Moulana Abbas AS na janaab ni taraf hadiyat",
+      "start_page": 15,
+      "end_page": 17
+    },
+    {
+      "id": 8,
+      "name": "Karbala Shohada AS na janaab ni taraf hadiyat",
+      "start_page": 17,
+      "end_page": 19
+    },
+    {
+      "id": 9,
+      "name": "Imam uz Zaman AS na janaab ni taraf hadiyat",
+      "start_page": 19,
+      "end_page": 19
+    },
+    {
+      "id": 10,
+      "name": "Imam Ali Zainulabedin AS na janaab ni taraf hadiyat",
+      "start_page": 19,
+      "end_page": 22
+    }
+  ],
+  "pageCount": 22
+};
+
+console.log(JSON.stringify(x));
+
 function play() {
   if (!audio.readyState) {
 
