@@ -578,6 +578,10 @@ onlongtouch = function () {
   playThisPage();
 };
 
+function showShortcuts() {
+  alert("Shortcuts \ns - set end time\nz - minus 5 secs\nx - plus 5 secs\nd - delete latest entry\nr - reset latest audio marking");
+}
+
 function generateTrackDB() {
   let visited = [];
   let currentOffset;
