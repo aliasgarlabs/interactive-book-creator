@@ -13,35 +13,23 @@ var urlParams = new URLSearchParams(window.location.search),
   isTracking = false,
   Constants = {
     1: {
-      x: 450,
-      y: 726,
       pages: 118
     },
     2: {
-      pages: 14,
-      x: 704,
-      y: 1020
+      pages: 14
     },
     3: {
-      x: 776,
-      y: 1053,
       pages: 38
     },
     4: {
-      x:741,
-      y: 1138,
       pages: 297,
 
     },
     5: {
-      pages: 297,
-      x: 776,
-      y: 1053
+      pages: 297
     },
     6: {
-      pages: 22,
-      x: 704,
-      y: 1019
+      pages: 22
     }
   },
   currentImage = {};
@@ -96,7 +84,9 @@ $(function () {
   image.onload = function () {
     currentImage = {
       x: this.width,
-      y: this.height
+      y: this.height,
+      naturalWidth : this.naturalWidth,
+      naturalHeight: this.naturalHeight
     };
     draw();
   }
@@ -113,8 +103,8 @@ $(function () {
     // e.data[1].css('left', e.offsetX==undefined?e.originalEvent.layerX:e.offsetX);
     // e.data[0].css('top', e.offsetY==undefined?e.originalEvent.layerY:e.offsetY);
 
-    var realX = parseInt(e.pageX * (Constants[publication].x / currentImage.x)),
-      realY = parseInt(e.pageY * (Constants[publication].y / currentImage.y));
+    var realX = parseInt(e.pageX * (currentImage.naturalWidth / currentImage.x)),
+      realY = parseInt(e.pageY * (currentImage.naturalHeight / currentImage.y));
 
     $('#coordinates').html('x: ' + realX + ' y : ' + realY);
   });
@@ -125,6 +115,9 @@ $(function () {
     if (e.pageX > currentImage.x || e.pageY > currentImage.y)
       return;
 
+    var realWidth = currentImage.naturalWidth;
+    var realHeight = currentImage.naturalHeight;
+    // alert(realWidth +"x"+ realHeight);
 
     var glyphID = collides(e.pageX, e.pageY);
     if (glyphID) {
@@ -138,8 +131,8 @@ $(function () {
       return;
     }
 
-    var realX = parseInt(e.pageX * (Constants[publication].x / currentImage.x)),
-      realY = parseInt(e.pageY * (Constants[publication].y / currentImage.y));
+    var realX = parseInt(e.pageX * (currentImage.naturalWidth / currentImage.x)),
+      realY = parseInt(e.pageY * (currentImage.naturalHeight / currentImage.y));
 
     if (!isTracking) {
       currentGlyph = {
@@ -260,6 +253,7 @@ function loadData(data) {
   trackId++;
   lastTrackEndTime = tracks.length ? tracks[tracks.length - 1].end_time : 0;
   updateCurrentTrackIDText();
+  draw();
 }
 
 function deleteAudioMarker() {
@@ -484,7 +478,7 @@ function renderImage() {
 }
 
 function next() {
-  if (imagePageNo > Constants[publication].pages) {
+  if (Constants[publication].pages && imagePageNo > Constants[publication].pages) {
     return;
   }
 
@@ -679,8 +673,8 @@ function draw() {
       console.log(min_x, min_y, max_x, max_y);
 
 
-      var ratioX = parseFloat(currentImage.x / Constants[publication].x),
-        ratioY = parseFloat(currentImage.y / Constants[publication].y);
+      var ratioX = parseFloat(currentImage.x / currentImage.naturalWidth),
+        ratioY = parseFloat(currentImage.y / currentImage.naturalHeight);
       var x = min_x * ratioX;
       var y = min_y * ratioY;
       var width = (max_x - min_x) * ratioX;
@@ -695,21 +689,23 @@ function draw() {
 
       if (trackIndex < 0) {
         console.log(trackIndex)
-
-        // Yellow if track not done
+        // Red if track not done
         color = "rgba(100, 0, 0, 0.2)" //red
       } else
         color = "rgba(0, 150, 0, 0.2)"; // blue
       //Draw rectangle
-      context.rect(x, y, width, height);
       context.fillStyle = color;
-      context.fill();
+      context.fillRect(x, y, width, height);
+      context.strokeStyle = "#FF0000";
+      context.strokeRect(x, y, width, height);
+
 
       context.fillStyle = "red";
       context.font = "30px Arial";
       context.fillText(glyph.id, x, y);
     }
   });
+
   return;
   getPixelData();
 }
@@ -843,8 +839,8 @@ function getPixelData() {
   document.body.appendChild(newcanvas); //Append canvas to body element
   color = "rgba(0, 150, 0, 0.2)"
 
-  var ratioX = parseFloat(currentImage.x / Constants[publication].x),
-    ratioY = parseFloat(currentImage.y / Constants[publication].y);
+  var ratioX = parseFloat(currentImage.x / currentImage.naturalWidth),
+    ratioY = parseFloat(currentImage.y / currentImage.naturalHeight);
 
   var newcontext = newcanvas.getContext('2d');
   newcontext.drawImage(img, 0, 0, img.width, img.height);
@@ -863,8 +859,8 @@ function getPixelData() {
 
     let min_y = line[2] * ratioY,
       max_y = line[3] * ratioY;
-    // newcontext.rect(pageBorders.left * ratioX, min_y, img.width-(pageBorders.right), (max_y- min_y));
     // newcontext.fillStyle = "rgba(0, 150, 150, 0.2)";
+    // newcontext.fillRect(pageBorders.left * ratioX, min_y, img.width-(pageBorders.right), (max_y- min_y));
     // newcontext.stroke();
 
 
@@ -902,11 +898,9 @@ function getPixelData() {
   console.log(gaps);
 
   _.each(gaps, (g) => {
-    newcontext.rect(g.x * ratioX, g.y - 5, g.w, g.h + 10);
     newcontext.lineWidth = 1;
     newcontext.fillStyle = "rgba(255, 0, 0, 0.4)";
-    newcontext.fill();
-
+    newcontext.fillRect(g.x * ratioX, g.y - 5, g.w, g.h + 10);
   });
 
 }
