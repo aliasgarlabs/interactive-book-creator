@@ -272,10 +272,10 @@ function deleteAudioMarker() {
     tracks.splice(trackIndex, 1);
     updateCurrentTrackIDText();
     invalidateTable();
+    draw();
   } else {
     alert("Last record not set anyway.");
   }
-
 }
 
 function invalidateTable() {
