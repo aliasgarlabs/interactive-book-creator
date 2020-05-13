@@ -350,7 +350,7 @@ function gotopagePrompt() {
 
   page = parseInt(page);
 
-  if (page > 0 && page <= Constants[publication].pages) {
+  if (page > 0 ) { // && page <= Constants[publication].pages
     gotoPage(page);
   } else {
     alert('Invalid page.');
@@ -460,7 +460,7 @@ function previous() {
 
 function gotoPage(page) {
   if (page <= 1) return;
-  if (page > Constants[publication].pages) return;
+  // if (page > Constants[publication].pages) return;
 
   imagePageNo = page;
   renderImage();
@@ -478,7 +478,7 @@ function renderImage() {
 }
 
 function next() {
-  if (Constants[publication].pages && imagePageNo > Constants[publication].pages) {
+  if (Constants[publication] && Constants[publication].pages && imagePageNo > Constants[publication].pages) {
     return;
   }
 
