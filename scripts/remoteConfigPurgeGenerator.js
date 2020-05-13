@@ -15,12 +15,12 @@
 let fs = require('fs'),
   _ = require('lodash'),
   $ = require('shelljs'),
-  path = '/Users/aliasgar/projects/sherullah-web/assets/audio/1',
+  path = '/Users/aliasgar/projects/book-digitizer/scripts/output/4_2',
   files = fs.readdirSync(path),
-  folder = 1,
+  folder = 4,
   purgeDate = new Date().getTime(),
-  purgeReason = 'Increased audio volume',
-  id = 3,
+  purgeReason = 'Added Syedna Mohammed Burhanuddin RA dua audio and munajaat on page 105',
+  id = 7,
   active = true;
 
 
@@ -31,7 +31,7 @@ let fs = require('fs'),
     active
   };
 
-console.log(purgeDate);
+// console.log(purgeDate, files);
 
 let purgeFiles = _.transform(files, (result, file) => {
   if(file.endsWith('.mp3')) {
@@ -39,7 +39,7 @@ let purgeFiles = _.transform(files, (result, file) => {
 
     result.push({
       folder,
-      page: parseInt(file.substr(4, 3)),
+      page: parseInt(file.substr(4,3)),
       size
     });
   }
@@ -48,8 +48,8 @@ let purgeFiles = _.transform(files, (result, file) => {
 // console.log(JSON.stringify(purgeFiles, "", 2));
 // console.log(purgeFiles.length);
 
-purgeRequest.purgeFiles =purgeFiles;
+purgeRequest.purgeFiles = purgeFiles;
 
-console.log(JSON.stringify(purgeRequest, "", 2));
+console.log(JSON.stringify(purgeRequest, null, 0));
 
 

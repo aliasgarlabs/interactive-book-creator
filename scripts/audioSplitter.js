@@ -1,10 +1,28 @@
 let _ = require('lodash'),
   $ = require('shelljs'),
-  audioFile = '/Users/aliasgar/projects/book-digitizer/assets/audio/4.mp3',
+  audioFile = '/Users/aliasgar/projects/book-digitizer/assets/audio/4_2.mp3',
   path = 'scripts/output',
-  data = require('./data/data_4.json');
+  data = require('/Users/aliasgar/Downloads/data (40).json');
 
 $.cd(path);
+
+//   rowIdOffset = 3;
+
+//   tracksnew = _.map(data.tracks, (track) => {
+//     track.id = track.id+rowIdOffset;
+//     return track;
+//   });
+
+
+//   glyphsnew = _.map(data.glyphs, (track) => {
+//     track.id = track.id+rowIdOffset;
+//     return track;
+//   });
+
+
+// console.log(JSON.stringify({ tracks: tracksnew, glyphs: glyphsnew }));
+
+
 
 let pageWise = _.transform(data.tracks, (result, track) => {
   if (!result[track.page_number]) {
@@ -21,8 +39,9 @@ let splitLocations = _.transform(pageWise, (result, page) => {
   result.push({ page_number: page[0].page_number, start_time, end_time })
 }, []);
 
+
 _.each(splitLocations, (splitLocation) => {
-  if(splitLocation.page_number>283)
+  // if(splitLocation.page_number>283)
     $.exec(`ffmpeg -i ${audioFile} -acodec copy -ss ${splitLocation.start_time} -to ${splitLocation.end_time} Page${zeroFill(splitLocation.page_number, 3)}.mp3`)
 });
 

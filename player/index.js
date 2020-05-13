@@ -7,8 +7,8 @@ var urlParams = new URLSearchParams(window.location.search),
   imagePageNo = parseInt(urlParams.get('page', 16)) || 2,
   audioPageNo = 2,
   playbackRate = 1,
-  trackId = 1,
-  tracks= [],
+  trackId = parseInt(urlParams.get('track')) || 1,
+  tracks = [],
   glyphs = [],
   isTracking = false,
   Constants = {
@@ -23,17 +23,26 @@ var urlParams = new URLSearchParams(window.location.search),
       y: 1020
     },
     3: {
-      pages: 20
+      x: 776,
+      y: 1053,
+      pages: 38
     },
     4: {
+      x:741,
+      y: 1138,
       pages: 297,
-      x: 741,
-      y: 1143
+
+    },
+    5: {
+      pages: 297,
+      x: 776,
+      y: 1053
     }
   },
   currentImage = {};
 
-  var canvas = document.createElement('canvas');
+var canvas = document.createElement('canvas'),
+  newcanvas = document.createElement('canvas');
 
 initializeApp();
 
@@ -44,13 +53,13 @@ function play() {
     audio.autoplay = true;
     document.getElementById('playerState').innerHTML = 'Pause';
   }
-  audio.src = baseAudioPath + "/audio/" + publication + ".mp3"
+  audio.src = baseAudioPath + "/audio/" + publication + "_2.mp3"
   setPlaybackRate();
 }
 
 
 function setEndTimeForCurrentTrackID() {
-  if(!_.find(glyphs, (glyph) => glyph.id == trackId)) {
+  if (!_.find(glyphs, (glyph) => glyph.id == trackId)) {
     alert('Glyph for track id ' + trackId + ' is not marked yet.');
     return;
   }
@@ -59,14 +68,14 @@ function setEndTimeForCurrentTrackID() {
   currentTrack = {
     id: trackId,
     page_number: imagePageNo,
-    start_time: tracks.length ? tracks[tracks.length-1].end_time: 0,
+    start_time: tracks.length ? tracks[tracks.length - 1].end_time : 0,
     end_time: time
   };
 
   lastTrackEndTime = time;
 
   tracks.push(currentTrack);
-  trackId = glyphs[glyphs.length-1].id +1;;
+  trackId = glyphs[glyphs.length - 1].id + 1;;
 
   updateCurrentTrackIDText();
   invalidateTable();
@@ -76,9 +85,9 @@ function updateCurrentTrackIDText() {
   document.getElementById("trackId").innerHTML = "Current Track ID: " + trackId;
 }
 
-$(function(){
+$(function () {
 
-  image.onload = function() {
+  image.onload = function () {
     currentImage = {
       x: this.width,
       y: this.height
@@ -86,46 +95,47 @@ $(function(){
     draw();
   }
 
-$('#imageholder img').on('mousemove', null, [$('#horizontal'), $('#vertical')],function(e){
-  e.data[1].css('left', e.offsetX==undefined?e.originalEvent.layerX:e.offsetX);
-  e.data[0].css('top', e.offsetY==undefined?e.originalEvent.layerY:e.offsetY);
-});
+  $('#imageholder img').on('mousemove', null, [$('#horizontal'), $('#vertical')], function (e) {
+    e.data[1].css('left', e.offsetX == undefined ? e.originalEvent.layerX : e.offsetX);
+    e.data[0].css('top', e.offsetY == undefined ? e.originalEvent.layerY : e.offsetY);
+  });
 
-  $(document).mousemove(function(e){
+  $(document).mousemove(function (e) {
     if (e.pageX > currentImage.x || e.pageY > currentImage.y)
       return;
 
     // e.data[1].css('left', e.offsetX==undefined?e.originalEvent.layerX:e.offsetX);
     // e.data[0].css('top', e.offsetY==undefined?e.originalEvent.layerY:e.offsetY);
 
-    var realX = parseInt(e.pageX*(Constants[publication].x/currentImage.x)),
-      realY =parseInt(e.pageY*(Constants[publication].y/currentImage.y));
+    var realX = parseInt(e.pageX * (Constants[publication].x / currentImage.x)),
+      realY = parseInt(e.pageY * (Constants[publication].y / currentImage.y));
 
-      $('#coordinates').html('x: ' + realX  + ' y : ' + realY);
+    $('#coordinates').html('x: ' + realX + ' y : ' + realY);
   });
 
 
 
-  $(document).mousedown(function(e){
+  $(document).mousedown(function (e) {
     if (e.pageX > currentImage.x || e.pageY > currentImage.y)
-    return;
+      return;
+
 
     var glyphID = collides(e.pageX, e.pageY);
     if (glyphID) {
-        alert('collision: ' + glyphID);
+      alert('collision: ' + glyphID);
     } else {
-        console.log('no collision');
+      console.log('no collision');
     }
 
-    if(_.find(glyphs, (glyph) => trackId == glyph.id)) {
+    if (_.find(glyphs, (glyph) => trackId == glyph.id)) {
       alert("Please add audio track record for track " + trackId);
       return;
     }
 
-    var realX = parseInt(e.pageX*(Constants[publication].x/currentImage.x)),
-      realY =parseInt(e.pageY*(Constants[publication].y/currentImage.y));
+    var realX = parseInt(e.pageX * (Constants[publication].x / currentImage.x)),
+      realY = parseInt(e.pageY * (Constants[publication].y / currentImage.y));
 
-    if(!isTracking) {
+    if (!isTracking) {
       currentGlyph = {
         id: trackId,
         page_number: imagePageNo,
@@ -142,11 +152,11 @@ $('#imageholder img').on('mousemove', null, [$('#horizontal'), $('#vertical')],f
       draw();
     }
     isTracking = !isTracking;
-    document.getElementById('tracking').innerHTML= isTracking ? "State: Tracking": "State: Not Tracking";
+    document.getElementById('tracking').innerHTML = isTracking ? "State: Tracking" : "State: Not Tracking";
   });
 })
 
-function insertTableRow({ id, page_number,  min_x, min_y, max_x, max_y, start_time, end_time }) {
+function insertTableRow({ id, page_number, min_x, min_y, max_x, max_y, start_time, end_time }) {
   // Find a <table> element with id="myTable":
   var table = document.getElementById("table");
 
@@ -174,7 +184,7 @@ function insertTableRow({ id, page_number,  min_x, min_y, max_x, max_y, start_ti
   cell8.appendChild(generatePlayLink(parseInt(end_time * 1000)));
 }
 
-function generateDeleteTrackLink (id) {
+function generateDeleteTrackLink(id) {
   var link = document.createElement("a");
   link.setAttribute("href", "#");
   link.setAttribute("onclick", `deleteRecord(${id})`);
@@ -185,35 +195,35 @@ function generateDeleteTrackLink (id) {
 }
 
 function deleteRecord() {
-  var glyphID = glyphs[glyphs.length-1].id, // get last glyph record
+  var glyphID = glyphs[glyphs.length - 1].id, // get last glyph record
     glyphIndex = _.findIndex(glyphs, (glyph) => glyphID == glyph.id);
-    trackIndex = _.findIndex(tracks, (track) => glyphID == track.id);
+  trackIndex = _.findIndex(tracks, (track) => glyphID == track.id);
 
   glyphs.splice(glyphIndex, 1);
 
-  if(trackIndex!=null)
+  if (trackIndex != null)
     tracks.splice(trackIndex, 1);
 
-  trackId= glyphs[glyphs.length-1].id +1 ;
+  trackId = glyphs[glyphs.length - 1].id + 1;
   updateCurrentTrackIDText();
   invalidateTable();
   draw();
 }
 
-function saveFile(){
+function saveFile() {
   var file = {
     glyphs: glyphs,
     tracks: tracks
   };
 
   var a = document.createElement('a');
-  a.setAttribute('href', 'data:text/plain;charset=utf-8,'+encodeURIComponent(JSON.stringify(file)));
+  a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(file)));
   a.setAttribute('download', 'data.json');
   a.click()
 }
 
 function loadFile() {
-  document.getElementById("fileUpload").style="display: block;"
+  document.getElementById("fileUpload").style = "display: block;"
 }
 
 function onFileUpload() {
@@ -221,37 +231,37 @@ function onFileUpload() {
 
   var fr = new FileReader();
 
-  fr.onload = function(e) {
-  try{
-    var result = JSON.parse(e.target.result);
-    console.log(result);
-    loadData(result);
-  } catch(e) {
-    alert('Invalid file');
-  }
+  fr.onload = function (e) {
+    try {
+      var result = JSON.parse(e.target.result);
+      console.log(result);
+      loadData(result);
+    } catch (e) {
+      alert('Invalid file');
+    }
   }
 
   fr.readAsText(files.item(0));
   // alert(file);
-  document.getElementById("fileUpload").style="display: none;"
+  document.getElementById("fileUpload").style = "display: none;"
 }
 
 function loadData(data) {
   glyphs = data.glyphs;
   tracks = data.tracks;
   invalidateTable();
-  trackId = tracks.length ? tracks[tracks.length-1].id: 1;
+  trackId = tracks.length ? tracks[tracks.length - 1].id : 1;
   trackId++;
-  lastTrackEndTime = tracks.length ? tracks[tracks.length-1].end_time: 0;
+  lastTrackEndTime = tracks.length ? tracks[tracks.length - 1].end_time : 0;
   updateCurrentTrackIDText();
 }
 
 function deleteAudioMarker() {
-  var glyphID = glyphs[glyphs.length-1].id, // get last glyph record
+  var glyphID = glyphs[glyphs.length - 1].id, // get last glyph record
     trackIndex = _.findIndex(tracks, (track) => glyphID == track.id);
 
-    console.log(glyphID, trackIndex)
-  if(trackIndex!=-1) {
+  console.log(glyphID, trackIndex)
+  if (trackIndex != -1) {
     trackId = glyphID;
     tracks.splice(trackIndex, 1);
     updateCurrentTrackIDText();
@@ -265,33 +275,33 @@ function deleteAudioMarker() {
 function invalidateTable() {
   var table = document.getElementById("table");
 
-  while(table.rows.length > 1) {
+  while (table.rows.length > 1) {
     table.deleteRow(1);
   }
 
   _.forEach(glyphs, (glyph) => {
-  var trackIndex = _.findIndex(tracks, (track) => glyph.id == track.id);
+    var trackIndex = _.findIndex(tracks, (track) => glyph.id == track.id);
 
     insertTableRow({
-        id: glyph.id,
-        page_number: glyph.page_number,
-        min_x: glyph.min_x,
-        min_y: glyph.min_y,
-        max_x: glyph.max_x,
-        max_y: glyph.max_y,
-        start_time: tracks.length && tracks[trackIndex] ? tracks[trackIndex].start_time: NaN,
-        end_time: tracks.length && tracks[trackIndex]? tracks[trackIndex].end_time : NaN
-     });
+      id: glyph.id,
+      page_number: glyph.page_number,
+      min_x: glyph.min_x,
+      min_y: glyph.min_y,
+      max_x: glyph.max_x,
+      max_y: glyph.max_y,
+      start_time: tracks.length && tracks[trackIndex] ? tracks[trackIndex].start_time : NaN,
+      end_time: tracks.length && tracks[trackIndex] ? tracks[trackIndex].end_time : NaN
+    });
   });
 }
 function seekToTime(time) {
   audio.currentTime = time;
 }
 
-function generatePlayLink (time) {
+function generatePlayLink(time) {
   var link = document.createElement("a");
   link.setAttribute("href", "#");
-  link.setAttribute("onclick", `seekToTime(${time/1000})`);
+  link.setAttribute("onclick", `seekToTime(${time / 1000})`);
 
   var linkText = document.createTextNode(time);
   link.appendChild(linkText);
@@ -446,7 +456,7 @@ function playSound() {
 setPlaybackRate();
 
 function previous() {
-  if (imagePageNo <= 1) return;
+  // if (imagePageNo <= 1) return;
 
   imagePageNo = imagePageNo - 1;
   renderImage();
@@ -572,7 +582,7 @@ function generateTrackDB() {
   let currentOffset;
 
   let pageOffsetTracks = _.map(tracks, (track) => {
-    if(!visited.includes(track.page_number)) {
+    if (!visited.includes(track.page_number)) {
       currentOffset = track.start_time;
       visited.push(track.page_number);
     }
@@ -585,13 +595,13 @@ function generateTrackDB() {
   });
 
   let sqlQueries = _.map(pageOffsetTracks, (track) => {
-    return `INSERT INTO audio_bihori VALUES (${track.id}, ${track.page_number}, "FALSE", ${parseInt(track.page_start_time*1000)}, ${parseInt(track.page_end_time*1000)})`;
+    return `INSERT INTO audio_bihori VALUES (${track.id}, ${track.page_number}, "FALSE", ${parseInt(track.page_start_time * 1000)}, ${parseInt(track.page_end_time * 1000)})`;
   }).join(';\n');
 
   console.log(sqlQueries);
 
   var a = document.createElement('a');
-  a.setAttribute('href', 'data:text/plain;charset=utf-8,'+encodeURIComponent(sqlQueries));
+  a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sqlQueries));
   a.setAttribute('download', 'sqlQueries.sql');
   a.click()
 }
@@ -604,18 +614,18 @@ function generateGlyphDB() {
   console.log(sqlQueries);
 
   var a = document.createElement('a');
-  a.setAttribute('href', 'data:text/plain;charset=utf-8,'+encodeURIComponent(sqlQueries));
+  a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sqlQueries));
   a.setAttribute('download', 'sqlQueries.sql');
   a.click()
 }
 
 loadJSONData();
 
-function loadJSONData () {
-  if(glyphs.length ==0 ) {
+function loadJSONData() {
+  if (glyphs.length == 0) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', '../scripts/data/data_4.json', true); // Replace 'my_data' with the path to your file
+    xobj.open('GET', '../assets/data/4_1.json', true); // Replace 'my_data' with the path to your file
     xobj.onreadystatechange = function () {
       if (xobj.readyState == 4 && xobj.status == "200") {
         // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -626,63 +636,65 @@ function loadJSONData () {
   }
 }
 
-  // // listener, using W3C style for example
-  // canvas.addEventListener('click', function(e) {
-  //   alert("Clicked");
-  //   console.log('click: ' + e.offsetX + '/' + e.offsetY);
-  //   var glyphID = collides(e.offsetX, e.offsetY);
-  //   if (glyphID) {
-  //       alert('collision: ' + glyphID);
-  //   } else {
-  //       console.log('no collision');
-  //   }
-  // }, false);
+// // listener, using W3C style for example
+// canvas.addEventListener('click', function(e) {
+//   alert("Clicked");
+//   console.log('click: ' + e.offsetX + '/' + e.offsetY);
+//   var glyphID = collides(e.offsetX, e.offsetY);
+//   if (glyphID) {
+//       alert('collision: ' + glyphID);
+//   } else {
+//       console.log('no collision');
+//   }
+// }, false);
 
 function draw() {
-    //Create a canvas element
+  //Create a canvas element
   //Set canvas width/height
-  canvas.style.width='100%';
-  canvas.style.height='100%';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
   //Set canvas drawing area width/height
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   //Position canvas
-  canvas.style.position='absolute';
-  canvas.style.left=0;
-  canvas.style.top=0;
-  canvas.style.zIndex=100000;
-  canvas.style.pointerEvents='none'; //Make sure you can click 'through' the canvas
+  canvas.style.position = 'absolute';
+  canvas.style.left = 0;
+  canvas.style.top = 0;
+  canvas.style.zIndex = 100000;
+  canvas.style.pointerEvents = 'none'; //Make sure you can click 'through' the canvas
   document.body.appendChild(canvas); //Append canvas to body element
   var context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   _.forEach(glyphs, (glyph) => {
-    if(glyph.page_number == imagePageNo) {
+    if (glyph.page_number == imagePageNo) {
       //Position parameters used for drawing the rectangle
-      let { min_x, min_y, max_x, max_y} = glyph;
+      let { min_x, min_y, max_x, max_y } = glyph;
 
       console.log(min_x, min_y, max_x, max_y);
 
 
-      var ratioX = parseFloat(currentImage.x/Constants[publication].x),
-      ratioY = parseFloat(currentImage.y/Constants[publication].y);
+      var ratioX = parseFloat(currentImage.x / Constants[publication].x),
+        ratioY = parseFloat(currentImage.y / Constants[publication].y);
       var x = min_x * ratioX;
       var y = min_y * ratioY;
-      var width = (max_x-min_x) *ratioX;
-      var height = (max_y-min_y) * ratioY;
+      var width = (max_x - min_x) * ratioX;
+      var height = (max_y - min_y) * ratioY;
 
       console.log(imagePageNo, x, y, width, height);
 
       // Check if track is available
-    var trackIndex = _.findIndex(tracks, (track) => glyph.id == track.id);
+      var trackIndex = _.findIndex(tracks, (track) => glyph.id == track.id);
 
-    let color = "rgba(0, 150, 50, 0.2)";
+      let color;
 
-    if(trackIndex < 0) {
+      if (trackIndex < 0) {
+        console.log(trackIndex)
 
-    // Yellow if track not done
-      "rgba(0, 150, 150, 0.2)"
-    }
+        // Yellow if track not done
+        color = "rgba(100, 0, 0, 0.2)" //red
+      } else
+        color = "rgba(0, 150, 0, 0.2)"; // blue
       //Draw rectangle
       context.rect(x, y, width, height);
       context.fillStyle = color;
@@ -693,199 +705,21 @@ function draw() {
       context.fillText(glyph.id, x, y);
     }
   });
-
-
+  return;
+  getPixelData();
 }
-
-let p = {
-  "publications": [
-    {
-      "id": 1,
-      "name": "Bihori",
-      "segments": [
-        {
-          "id": 1,
-          "name": "صلاة الاستفتاح",
-          "start_page": 2,
-          "end_page": 11
-        },
-        {
-          "id": 2,
-          "name": "صلاة نصف الليل",
-          "start_page": 12,
-          "end_page": 30
-        },
-        {
-          "id": 3,
-          "name": "صلاة مغفرة الذنوب",
-          "start_page": 30,
-          "end_page": 39
-        },
-        {
-          "id": 4,
-          "name": "قضاء الحوائج",
-          "start_page": 39,
-          "end_page": 54
-        },
-        {
-          "id": 5,
-          "name": "صلاة التهجد",
-          "start_page": 55,
-          "end_page": 70
-        },
-        {
-          "id": 6,
-          "name": "صلاة وحشة القبور",
-          "start_page": 70,
-          "end_page": 79
-        },
-        {
-          "id": 7,
-          "name": "صلاة كشف الهم والغم",
-          "start_page": 79,
-          "end_page": 83
-        },
-        {
-          "id": 8,
-          "name": "صلاة طلب الرزق الواسع",
-          "start_page": 83,
-          "end_page": 87
-        },
-        {
-          "id": 9,
-          "name": "صلاة طلب العافية",
-          "start_page": 87,
-          "end_page": 92
-        },
-        {
-          "id": 10,
-          "name": "صلاة نور القبر",
-          "start_page": 92,
-          "end_page": 95
-        },
-        {
-          "id": 11,
-          "name": "صلاة خاتمة الخير",
-          "start_page": 95,
-          "end_page": 99
-        },
-        {
-          "id": 12,
-          "name": "صلاة قبول الصلاة والصيام",
-          "start_page": 99,
-          "end_page": 102
-        },
-        {
-          "id": 13,
-          "name": "صلاة الشفع",
-          "start_page": 102,
-          "end_page": 999
-        },
-        {
-          "id": 14,
-          "name": "صلاة الوتر",
-          "start_page": 103,
-          "end_page": 105
-        },
-        {
-          "id": 15,
-          "name": "صلاة الجلوس",
-          "start_page": 105,
-          "end_page": 113
-        },
-        {
-          "id": 16,
-          "name": "معطي السؤالات",
-          "start_page": 117,
-          "end_page": 118
-        }
-      ],
-      "pageCount": 118
-    },
-    {
-      "id": 2,
-      "name": "Daska",
-      "segments": [
-        {
-          "id": 1,
-          "name": "Daska 1 First Dua",
-          "start_page": 1,
-          "end_page": 2
-        },
-        {
-          "id": 2,
-          "name": "Daska 1 Second Dua",
-          "start_page": 3,
-          "end_page": 4
-        },
-        {
-          "id": 3,
-          "name": "Daska 2 First Dua",
-          "start_page": 5,
-          "end_page": 6
-        },
-        {
-          "id": 4,
-          "name": "Daska 2 Second Dua",
-          "start_page": 6,
-          "end_page": 9
-        },
-        {
-          "id": 5,
-          "name": "Daska 3 First Dua",
-          "start_page": 9,
-          "end_page": 11
-        },
-        {
-          "id": 6,
-          "name": "Daska 3 Second Dua",
-          "start_page": 11,
-          "end_page": 14
-        }
-      ],
-      "pageCount": 14
-    },
-    {
-      "id": 3,
-      "name": "Fajr",
-      "segments": [
-        {
-          "id": 1,
-          "name": "دعاء",
-          "start_page": 2,
-          "end_page": 13
-        },
-        {
-          "id": 2,
-          "name": "روزه ني نية",
-          "start_page": 14,
-          "end_page": 16
-        },
-        {
-          "id": 3,
-          "name": "فحوى",
-          "start_page": 17,
-          "end_page": 30
-        }
-      ],
-      "pageCount": 30
-    }
-  ]
-};
-
-console.log(JSON.stringify(p));
 
 function collides(x, y) {
   _.forEach(glyphs, (glyph) => {
-    if(glyph.page_number == imagePageNo) {
+    if (glyph.page_number == imagePageNo) {
       var left = glyph.min_x,
         right = glyph.max_x;
       var top = glyph.min_y, bottom = glyph.max_y;
       if (right >= x
-          && left <= x
-          && bottom >= y
-          && top <= y) {
-          return glyph.id;
+        && left <= x
+        && bottom >= y
+        && top <= y) {
+        return glyph.id;
       }
     }
   });
@@ -893,3 +727,247 @@ function collides(x, y) {
   return 0;
 }
 
+let lines = [[
+  3,
+  1,
+  39,
+  96
+],
+[
+  3,
+  2,
+  96,
+  156
+],
+[
+  3,
+  3,
+  156,
+  216
+],
+[
+  3,
+  4,
+  216,
+  278
+],
+[
+  3,
+  5,
+  278,
+  336
+],
+[
+  3,
+  6,
+  336,
+  396
+],
+[
+  3,
+  7,
+  396,
+  458
+],
+[
+  3,
+  8,
+  458,
+  518
+],
+[
+  3,
+  9,
+  518,
+  579
+],
+[
+  3,
+  10,
+  579,
+  638
+],
+[
+  3,
+  11,
+  638,
+  700
+],
+[
+  3,
+  12,
+  700,
+  760
+],
+[
+  3,
+  13,
+  760,
+  823
+],
+[
+  3,
+  14,
+  823,
+  882
+],
+[
+  3,
+  15,
+  882,
+  944
+]
+];
+
+function getPixelData() {
+  var img = document.getElementById('image');
+
+  //Create a canvas element
+  //Set canvas width/height
+  // newcanvas.style.width='100%';
+  // newcanvas.style.height='100%';
+  //Set canvas drawing area width/height
+  newcanvas.width = img.width;
+  newcanvas.height = img.height;
+  //Position canvas
+  newcanvas.style.position = 'absolute';
+  newcanvas.style.left = 0;
+  newcanvas.style.top = 0;
+  newcanvas.style.zIndex = 100000;
+  newcanvas.style.pointerEvents = 'none'; //Make sure you can click 'through' the canvas
+  document.body.appendChild(newcanvas); //Append canvas to body element
+  color = "rgba(0, 150, 150, 0.2)"
+
+  var ratioX = parseFloat(currentImage.x / Constants[publication].x),
+    ratioY = parseFloat(currentImage.y / Constants[publication].y);
+
+  var newcontext = newcanvas.getContext('2d');
+  newcontext.drawImage(img, 0, 0, img.width, img.height);
+
+  let pageBorders = getBorder();
+  let line_start = img.width - (pageBorders.right);
+  let line_end = pageBorders.left;
+  let blob_width = 2;
+  let blob_margin = 10;
+  let x_offset = 0;
+
+  let gaps = [];
+  _.each(lines, (line) => {
+    // if (line[1] != 3) return;
+    console.log(line[2], line[3]);
+
+    let min_y = line[2] * ratioY,
+      max_y = line[3] * ratioY;
+    // newcontext.rect(pageBorders.left * ratioX, min_y, img.width-(pageBorders.right), (max_y- min_y));
+    // newcontext.fillStyle = "rgba(0, 150, 150, 0.2)";
+    // newcontext.stroke();
+
+
+    let lastIsWhite = false,
+      lastWhiteX = 0;
+
+    let y = min_y + blob_margin,
+      w = blob_width,
+      h = max_y - min_y - (blob_margin * 2),
+      padding = 1;
+    for (i = 0; i < img.width; i++) {
+
+      let x = line_start - blob_width - i;
+
+      let didFindTheGap = handleCanvasTouch(x, y, w, h);
+      if (didFindTheGap) {
+        if (!lastIsWhite) {
+          lastIsWhite = true;
+          lastWhiteX = (x + (w / 2)) / ratioX;
+
+        }
+      } else {
+        if (lastIsWhite) {
+          let finalX = (lastWhiteX + ((x + (w / 2)) / ratioX)) / 2;
+          gaps.push({ x: finalX, y, w, h });
+        }
+        lastIsWhite = false;
+        lastWhiteX = 0;
+      }
+    }
+
+  });
+
+
+  console.log(gaps);
+
+  _.each(gaps, (g) => {
+    newcontext.rect(g.x * ratioX, g.y - 5, g.w, g.h + 10);
+    newcontext.lineWidth = 1;
+    newcontext.fillStyle = "rgba(255, 0, 0, 0.4)";
+    newcontext.fill();
+
+  });
+
+}
+
+BORDER_LEFT_AL_MUSHAF_ODD = 12;
+BORDER_TOP_AL_MUSHAF_ODD = 15;
+BORDER_RIGHT_AL_MUSHAF_ODD = 116;
+BORDER_BOTTOM_AL_MUSHAF_ODD = 92;
+BORDER_LEFT_AL_MUSHAF_EVEN = 108;
+BORDER_TOP_AL_MUSHAF_EVEN = BORDER_TOP_AL_MUSHAF_ODD;
+BORDER_RIGHT_AL_MUSHAF_EVEN = 18;
+BORDER_BOTTOM_AL_MUSHAF_EVEN = BORDER_BOTTOM_AL_MUSHAF_ODD;
+
+
+function getBorder() {
+
+  if (imagePageNo % 2 == 0) {
+    return { left: BORDER_LEFT_AL_MUSHAF_EVEN, right: BORDER_RIGHT_AL_MUSHAF_EVEN }
+  } else {
+    return { left: BORDER_LEFT_AL_MUSHAF_ODD, right: BORDER_RIGHT_AL_MUSHAF_ODD }
+  }
+
+}
+
+
+function handleCanvasTouch(x, y, w, h) {
+  // var realX = parseInt(x*(Constants[publication].x/currentImage.x)),
+  // realY =parseInt(y*(Constants[publication].y/currentImage.y));
+
+  var pixelData = newcanvas.getContext('2d').getImageData(x, y, w, h).data;
+  var whiteCount = 0;
+  let colors = [];
+
+  for (var i = 0; i < pixelData.length; i += 4) {
+    let color = rgbToHex(pixelData[i], pixelData[i + 1], pixelData[i + 2]);
+    if (!colors[color]) {
+      colors[color] = {
+        count: 0
+      }
+    }
+
+    if (color == "#ffffff" || color == "#fefefe" || color == "#fdfdfd") {
+      if (!colors["#ffffff"])
+        colors["#ffffff"] = { count: 0 };
+      whiteCount++;
+      colors["#ffffff"].count++;
+    }
+    else
+      colors[color].count++;
+
+  }
+
+  // console.log(colors);
+
+  console.log(whiteCount / (pixelData.length / 4));
+  if (whiteCount / (pixelData.length / 4) == 1) {
+    return true
+  }
+  return false;
+}
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
