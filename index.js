@@ -51,7 +51,7 @@ function switchPublication(newPublication) {
 }
 
 function listClicked(page) {
-  window.location = 'player.html?publication=' + publication + '&page=' + page;
+  window.location = 'player?publication=' + publication + '&page=' + page;
 }
 
 function cleanList() {
