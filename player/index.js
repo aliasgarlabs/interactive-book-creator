@@ -37,6 +37,11 @@ var urlParams = new URLSearchParams(window.location.search),
       pages: 297,
       x: 776,
       y: 1053
+    },
+    6: {
+      pages: 22,
+      x: 704,
+      y: 1019
     }
   },
   currentImage = {};
@@ -53,7 +58,7 @@ function play() {
     audio.autoplay = true;
     document.getElementById('playerState').innerHTML = 'Pause';
   }
-  audio.src = baseAudioPath + "/audio/" + publication + "_2.mp3"
+  audio.src = baseAudioPath + "/audio/" + publication + ".mp3"
   setPlaybackRate();
 }
 
@@ -63,7 +68,7 @@ function setEndTimeForCurrentTrackID() {
     alert('Glyph for track id ' + trackId + ' is not marked yet.');
     return;
   }
-  playSound();
+
   var time = document.getElementById("audio").currentTime;
   currentTrack = {
     id: trackId,
@@ -79,6 +84,7 @@ function setEndTimeForCurrentTrackID() {
 
   updateCurrentTrackIDText();
   invalidateTable();
+  draw();
 }
 
 function updateCurrentTrackIDText() {
@@ -201,7 +207,7 @@ function deleteRecord() {
 
   glyphs.splice(glyphIndex, 1);
 
-  if (trackIndex != null)
+  if (trackIndex != -1)
     tracks.splice(trackIndex, 1);
 
   trackId = glyphs[glyphs.length - 1].id + 1;
@@ -448,11 +454,6 @@ function checkKey(e) {
 
 }
 
-function playSound() {
-  var sound = document.getElementById("beep");
-  sound.play();
-}
-
 setPlaybackRate();
 
 function previous() {
@@ -619,7 +620,7 @@ function generateGlyphDB() {
   a.click()
 }
 
-loadJSONData();
+// loadJSONData();
 
 function loadJSONData() {
   if (glyphs.length == 0) {
@@ -836,7 +837,7 @@ function getPixelData() {
   newcanvas.style.zIndex = 100000;
   newcanvas.style.pointerEvents = 'none'; //Make sure you can click 'through' the canvas
   document.body.appendChild(newcanvas); //Append canvas to body element
-  color = "rgba(0, 150, 150, 0.2)"
+  color = "rgba(0, 150, 0, 0.2)"
 
   var ratioX = parseFloat(currentImage.x / Constants[publication].x),
     ratioY = parseFloat(currentImage.y / Constants[publication].y);
