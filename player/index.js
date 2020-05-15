@@ -29,7 +29,7 @@ var urlParams = new URLSearchParams(window.location.search),
       pages: 297
     },
     6: {
-      pages: 22
+      pages: 24
     }
   },
   currentImage = {};
@@ -104,7 +104,7 @@ let x = {
       "end_page": 22
     }
   ],
-  "pageCount": 22
+  "pageCount": 24
 };
 
 console.log(JSON.stringify(x));
@@ -116,7 +116,7 @@ function play() {
     audio.autoplay = true;
     document.getElementById('playerState').innerHTML = 'Pause';
   }
-  audio.src = baseAudioPath + "/audio/" + publication + ".mp3"
+  audio.src = baseAudioPath + "/audio/" + publication + "_2.mp3"
   setPlaybackRate();
 }
 
