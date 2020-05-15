@@ -116,7 +116,7 @@ function play() {
     audio.autoplay = true;
     document.getElementById('playerState').innerHTML = 'Pause';
   }
-  audio.src = baseAudioPath + "/audio/" + publication + "_2.mp3"
+  audio.src = baseAudioPath + "/audio/" + publication + "_3.mp3"
   setPlaybackRate();
 }
 
