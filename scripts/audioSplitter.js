@@ -1,8 +1,8 @@
 let _ = require('lodash'),
   $ = require('shelljs'),
-  audioFile = '/Users/aliasgar/projects/book-digitizer/assets/audio/7_2.mp3',
+  audioFile = '/Users/aliasgar/projects/book-digitizer/assets/audio/7_3.mp3',
   path = 'scripts/output',
-  data = require('/Users/aliasgar/Downloads/data (50).json');
+  data = require('/Users/aliasgar/Downloads/data (6) (1).json');
 
 $.cd(path);
 
