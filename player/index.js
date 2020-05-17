@@ -287,7 +287,7 @@ function saveFile() {
 
   var a = document.createElement('a');
   a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(file)));
-  a.setAttribute('download', 'data.json');
+  a.setAttribute('download', `data_${publication}.json`);
   a.click()
 }
 
@@ -664,7 +664,7 @@ function generateTrackDB() {
   });
 
   let sqlQueries = _.map(pageOffsetTracks, (track) => {
-    return `INSERT INTO audio_bihori VALUES (${track.id}, ${track.page_number}, "FALSE", ${parseInt(track.page_start_time * 1000)}, ${parseInt(track.page_end_time * 1000)})`;
+    return `INSERT INTO audio_${publication} VALUES (${track.id}, ${track.page_number}, "FALSE", ${parseInt(track.page_start_time * 1000)}, ${parseInt(track.page_end_time * 1000)})`;
   }).join(';\n');
 
   console.log(sqlQueries);
@@ -677,7 +677,7 @@ function generateTrackDB() {
 
 function generateGlyphDB() {
   let sqlQueries = _.map(glyphs, (glyph) => {
-    return `INSERT INTO glyphs_bihori VALUES (${glyph.id}, ${glyph.page_number}, ${glyph.min_x}, ${glyph.min_y}, ${glyph.max_x}, ${glyph.max_y})`;
+    return `INSERT INTO glyphs_${publication} VALUES (${glyph.id}, ${glyph.page_number}, ${glyph.min_x}, ${glyph.min_y}, ${glyph.max_x}, ${glyph.max_y})`;
   }).join(';\n');
 
   console.log(sqlQueries);

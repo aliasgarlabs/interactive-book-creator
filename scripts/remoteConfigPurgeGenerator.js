@@ -15,12 +15,12 @@
 let fs = require('fs'),
   _ = require('lodash'),
   $ = require('shelljs'),
-  path = '/Users/aliasgar/projects/book-digitizer/scripts/output/4_2',
+  path = '/Users/aliasgar/projects/sherullah-web/assets/pages/4',
   files = fs.readdirSync(path),
   folder = 4,
   purgeDate = new Date().getTime(),
-  purgeReason = 'Added Syedna Mohammed Burhanuddin RA dua audio and munajaat on page 105',
-  id = 7,
+  purgeReason = 'Improved scan quality of the new bihori sahifa pages.',
+  id = 1,
   active = true;
 
 
@@ -31,15 +31,38 @@ let fs = require('fs'),
     active
   };
 
-// console.log(purgeDate, files);
+// // console.log(purgeDate, files);
+
+// let purgeFiles = _.transform(files, (result, file) => {
+//   if(file.endsWith('.mp3')) {
+//     var size = fs.statSync(path+"/"+file).size;
+
+//     result.push({
+//       folder,
+//       page: parseInt(file.substr(4,3)),
+//       size
+//     });
+//   }
+// }, []);
+
+// // console.log(JSON.stringify(purgeFiles, "", 2));
+// // console.log(purgeFiles.length);
+
+// purgeRequest.purgeFiles = purgeFiles;
+
+// console.log(JSON.stringify(purgeRequest, null, 0));
+
+
+// IMAGES
+
 
 let purgeFiles = _.transform(files, (result, file) => {
-  if(file.endsWith('.mp3')) {
+  if(file.endsWith('.jpg')) {
     var size = fs.statSync(path+"/"+file).size;
 
     result.push({
       folder,
-      page: parseInt(file.substr(4,3)),
+      page: parseInt(file),
       size
     });
   }
