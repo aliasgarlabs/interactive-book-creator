@@ -279,24 +279,43 @@ function deleteRecord() {
   draw();
 }
 
-function saveFile() {
+
+function changePageByOffset() {
   
   // TODO change pages add 52 offset
 
-  var offset = 52;
+  var offset = 56;
 
   glyphs = _.map(glyphs, (glyph) => {
-    glyph.page_number = glyph.page_number + offset; 
+    glyph.id = glyph.id + offset; 
+    return glyph;
   });
 
   tracks = _.map(tracks, (track) => {
-    track.page_number = track.page_number + offset; 
+    track.id = track.id + offset; 
+    return track;
   });
 
   var file = {
     glyphs: glyphs,
     tracks: tracks
   };
+
+
+  var a = document.createElement('a');
+  a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(file)));
+  a.setAttribute('download', `data_${publication}.json`);
+  a.click()
+}
+
+
+function saveFile() {
+  
+  var file = {
+    glyphs: glyphs,
+    tracks: tracks
+  };
+
 
   var a = document.createElement('a');
   a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(file)));
