@@ -15,11 +15,11 @@
 let fs = require('fs'),
   _ = require('lodash'),
   $ = require('shelljs'),
-  path = '/Users/aliasgar/projects/sherullah-web/assets/pages/4',
+  path = '/Users/aliasgar/projects/web/assets/audio/8',
   files = fs.readdirSync(path),
-  folder = 4,
+  folder =8,
   purgeDate = new Date().getTime(),
-  purgeReason = 'Improved scan quality of the new bihori sahifa pages.',
+  purgeReason = 'Remove incorrect bihori juzz 2 audio',
   id = 1,
   active = true;
 
@@ -33,20 +33,20 @@ let fs = require('fs'),
 
 // // console.log(purgeDate, files);
 
-// let purgeFiles = _.transform(files, (result, file) => {
-//   if(file.endsWith('.mp3')) {
-//     var size = fs.statSync(path+"/"+file).size;
+let purgeFiles = _.transform(files, (result, file) => {
+  if(file.endsWith('.mp3')) {
+    var size = fs.statSync(path+"/"+file).size;
 
-//     result.push({
-//       folder,
-//       page: parseInt(file.substr(4,3)),
-//       size
-//     });
-//   }
-// }, []);
+    result.push({
+      folder,
+      page: parseInt(file.substr(4,3)),
+      size
+    });
+  }
+}, []);
 
-// // console.log(JSON.stringify(purgeFiles, "", 2));
-// // console.log(purgeFiles.length);
+// console.log(JSON.stringify(purgeFiles, "", 2));
+// console.log(purgeFiles.length);
 
 // purgeRequest.purgeFiles = purgeFiles;
 
@@ -56,17 +56,17 @@ let fs = require('fs'),
 // IMAGES
 
 
-let purgeFiles = _.transform(files, (result, file) => {
-  if(file.endsWith('.jpg')) {
-    var size = fs.statSync(path+"/"+file).size;
+// let purgeFiles = _.transform(files, (result, file) => {
+//   if(file.endsWith('.jpg')) {
+//     var size = fs.statSync(path+"/"+file).size;
 
-    result.push({
-      folder,
-      page: parseInt(file),
-      size
-    });
-  }
-}, []);
+//     result.push({
+//       folder,
+//       page: parseInt(file),
+//       size
+//     });
+//   }
+// }, []);
 
 // console.log(JSON.stringify(purgeFiles, "", 2));
 // console.log(purgeFiles.length);

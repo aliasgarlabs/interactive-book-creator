@@ -1,0 +1,174 @@
+{
+    "glyphs": [
+        {
+            "id": 14,
+            "page_number": 11,
+            "min_x": 150,
+            "min_y": 122,
+            "max_x": 1092,
+            "max_y": 404
+        },
+        {
+            "id": 15,
+            "page_number": 11,
+            "min_x": 148,
+            "min_y": 414,
+            "max_x": 1080,
+            "max_y": 891
+        },
+        {
+            "id": 16,
+            "page_number": 11,
+            "min_x": 148,
+            "min_y": 891,
+            "max_x": 1080,
+            "max_y": 1319
+        },
+        {
+            "id": 17,
+            "page_number": 11,
+            "min_x": 152,
+            "min_y": 1321,
+            "max_x": 1072,
+            "max_y": 1579
+        },
+        {
+            "id": 18,
+            "page_number": 12,
+            "min_x": 160,
+            "min_y": 124,
+            "max_x": 1088,
+            "max_y": 261
+        },
+        {
+            "id": 19,
+            "page_number": 12,
+            "min_x": 150,
+            "min_y": 263,
+            "max_x": 1088,
+            "max_y": 920
+        },
+        {
+            "id": 20,
+            "page_number": 12,
+            "min_x": 147,
+            "min_y": 918,
+            "max_x": 1084,
+            "max_y": 1342
+        },
+        {
+            "id": 21,
+            "page_number": 12,
+            "min_x": 148,
+            "min_y": 1344,
+            "max_x": 1082,
+            "max_y": 1609
+        },
+        {
+            "id": 22,
+            "page_number": 13,
+            "min_x": 148,
+            "min_y": 120,
+            "max_x": 1090,
+            "max_y": 263
+        },
+        {
+            "id": 23,
+            "page_number": 13,
+            "min_x": 148,
+            "min_y": 261,
+            "max_x": 1080,
+            "max_y": 582
+        },
+        {
+            "id": 24,
+            "page_number": 13,
+            "min_x": 148,
+            "min_y": 580,
+            "max_x": 1082,
+            "max_y": 922
+        },
+        {
+            "id": 25,
+            "page_number": 13,
+            "min_x": 148,
+            "min_y": 920,
+            "max_x": 1082,
+            "max_y": 1392
+        }
+    ],
+    "tracks": [
+        {
+            "id": 14,
+            "page_number": 11,
+            "start_time": 0,
+            "end_time": 9.967783
+        },
+        {
+            "id": 15,
+            "page_number": 11,
+            "start_time": 9.967783,
+            "end_time": 30.396257
+        },
+        {
+            "id": 16,
+            "page_number": 11,
+            "start_time": 30.396257,
+            "end_time": 47.249268
+        },
+        {
+            "id": 17,
+            "page_number": 11,
+            "start_time": 47.249268,
+            "end_time": 59.101114
+        },
+        {
+            "id": 18,
+            "page_number": 12,
+            "start_time": 59.101114,
+            "end_time": 64.313379
+        },
+        {
+            "id": 19,
+            "page_number": 12,
+            "start_time": 64.313379,
+            "end_time": 92.433792
+        },
+        {
+            "id": 20,
+            "page_number": 12,
+            "start_time": 92.433792,
+            "end_time": 115.912766
+        },
+        {
+            "id": 21,
+            "page_number": 12,
+            "start_time": 115.912766,
+            "end_time": 128.713896
+        },
+        {
+            "id": 22,
+            "page_number": 13,
+            "start_time": 128.713896,
+            "end_time": 132.961614
+        },
+        {
+            "id": 23,
+            "page_number": 13,
+            "start_time": 132.961614,
+            "end_time": 149.067365
+        },
+        {
+            "id": 24,
+            "page_number": 13,
+            "start_time": 149.067365,
+            "end_time": 167.113622
+        },
+        {
+            "id": 25,
+            "page_number": 13,
+            "start_time": 167.113622,
+            "end_time": 191.657074
+        }
+    ]
+}
