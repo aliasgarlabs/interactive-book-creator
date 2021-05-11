@@ -280,6 +280,19 @@ function deleteRecord() {
 }
 
 function saveFile() {
+  
+  // TODO change pages add 52 offset
+
+  var offset = 52;
+
+  glyphs = _.map(glyphs, (glyph) => {
+    glyph.page_number = glyph.page_number + offset; 
+  });
+
+  tracks = _.map(tracks, (track) => {
+    track.page_number = track.page_number + offset; 
+  });
+
   var file = {
     glyphs: glyphs,
     tracks: tracks
