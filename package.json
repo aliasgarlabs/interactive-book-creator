@@ -18,6 +18,6 @@
   "homepage": "https://github.com/aliasgarlabs/interactive-book-creator#readme",
   "dependencies": {
     "lodash": "^4.17.15",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   }
 }
