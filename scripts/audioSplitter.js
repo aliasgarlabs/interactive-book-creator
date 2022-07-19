@@ -1,11 +1,19 @@
 let _ = require('lodash'),
   $ = require('shelljs'),
-  audioFile = '/Users/aliasgar/projects/interactive-book-creator/assets/audio/17.mp3',
-  path = 'scripts/output/17',
-  data = require('/Users/aliasgar/projects/interactive-book-creator/assets/data/17_1.json');
+  audioFile = '/Users/aliasgar/projects/interactive-book-creator/assets/audio/18.mp3',
+  path = 'scripts/output/18',
+  data = require('/Users/aliasgar/Downloads/data_18.json');
 
 $.cd(path);
 
+
+// Track wise audio file
+_.each(data.tracks, (splitLocation) => {
+  // if(splitLocation.page_number>283)
+    $.exec(`ffmpeg -i ${audioFile} -acodec copy -ss ${splitLocation.start_time} -to ${splitLocation.end_time} Page${zeroFill(splitLocation.id, 3)}.mp3`)
+});
+
+return;
 //   rowIdOffset = 3;
 
 //   tracksnew = _.map(data.tracks, (track) => {
