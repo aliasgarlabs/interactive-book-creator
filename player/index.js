@@ -3,8 +3,8 @@ var urlParams = new URLSearchParams(window.location.search),
   baseAudioPath = "../assets",
   image = document.getElementById("image"),
   audio = document.getElementById("audio"),
-  publication = parseInt(urlParams.get('publication')) || 4,
-  imagePageNo = parseInt(urlParams.get('page', 16)) || 2,
+  publication = parseInt(urlParams.get('publication')) || 18,
+  imagePageNo = parseInt(urlParams.get('page', 16)) || 584,
   audioPageNo = 2,
   playbackRate = 1,
   trackId = parseInt(urlParams.get('track')) || 1,
@@ -310,6 +310,8 @@ function changePageByOffset() {
 
 
 function saveFile() {
+
+  
   
   var file = {
     glyphs: glyphs,
