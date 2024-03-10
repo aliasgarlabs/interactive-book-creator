@@ -1,0 +1,19 @@
+<html>
+
+<body>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <!-- <input type="file" name="filo" required> -->
+        <input type="file" id="dataFile" name="dataFile">
+        <input type="file" id="audioFile" name="audioFile" accept="audio/*">
+        <input type="submit">
+
+    </form>
+
+</body>
+<script>
+    onsubmit = (event) => {
+        console.log("Form submitted!");
+    };
+</script>
+
+</html>
