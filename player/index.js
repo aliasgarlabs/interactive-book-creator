@@ -1,5 +1,5 @@
 var urlParams = new URLSearchParams(window.location.search),
-  baseImagePath = "../assets",
+  baseImagePath = "https://alhafti.b-cdn.net",
   baseAudioPath = "../assets",
   image = document.getElementById("image"),
   audio = document.getElementById("audio"),
@@ -110,13 +110,16 @@ let x = {
 console.log(JSON.stringify(x));
 
 function play() {
+  if(!audio.src) {
+    alert("Please upload the audio file");
+  }
+
   if (!audio.readyState) {
 
     audioPageNo = imagePageNo;
     audio.autoplay = true;
     document.getElementById('playerState').innerHTML = 'Pause';
   }
-  audio.src = baseAudioPath + "/audio/" + publication + ".mp3"
   setPlaybackRate();
 }
 
@@ -347,6 +350,11 @@ function onFileUpload() {
   fr.readAsText(files.item(0));
   // alert(file);
   document.getElementById("fileUpload").style = "display: none;"
+}
+
+function onFileAudioUpload() {
+  var file = document.getElementById("audioFile").files[0]
+  audio.src = URL.createObjectURL(file); 
 }
 
 function loadData(data) {

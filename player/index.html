@@ -62,23 +62,24 @@
   <input type="file" id="myFile" onchange="onFileUpload()">
 </div>
 
-        <div class="container">
-          <div class="row">
-            <div class="col-3">
 
-            </div>
-            <div class="col-3">
-              <button type="button" id="pageNo" class="btn btn-link" onclick="gotopagePrompt()">Page 1</button>
-            </div>
-            <div class="col-3">
-            </div>
-              <div class="col-3">
-            </div>
-          </div>
-
-        </div>
       </div>
       <div class="overlay">
+        <div class="row">
+          <div class="col-md-3">
+            <h5 id="tracking" style="color: white;">Page:</h5>
+          </div>
+          <div class="col-md-3">
+            <button type="button" id="pageNo" class="btn btn-link" onclick="gotopagePrompt()">Page 1</button>
+          </div>
+      
+          <div class="col-md-3">
+            <h5 id="coordinates" style="color: white;">Audio:​</h5>
+          </div>
+          <div class="col-md-3">
+            <input type="file" id="audioFile" name="audioFile" onchange="onFileAudioUpload()" accept="audio/*">
+          </div>
+      </div>
         <div class="row">
           <div class="col-md-3">
             <h5 id="tracking" style="color: white;">State: Not Tracking</h5>
