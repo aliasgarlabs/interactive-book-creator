@@ -1,7 +1,3 @@
 scripts/
-assets/pages/1
-assets/pages/2
-assets/pages/3
-assets/pages/4
-assets/pages/5
-node_modules/
+assets/*
+node_modules/*
