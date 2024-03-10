@@ -3,8 +3,8 @@ var urlParams = new URLSearchParams(window.location.search),
   baseAudioPath = "../assets",
   image = document.getElementById("image"),
   audio = document.getElementById("audio"),
-  publication = parseInt(urlParams.get('publication')) || 18,
-  imagePageNo = parseInt(urlParams.get('page', 16)) || 584,
+  publication = parseInt(urlParams.get('publication')) || 1,
+  imagePageNo = parseInt(urlParams.get('page', 16)) || 1,
   audioPageNo = 2,
   playbackRate = 1,
   trackId = parseInt(urlParams.get('track')) || 1,
@@ -469,7 +469,24 @@ function gotopagePrompt() {
   }
 }
 
+function gotopublicationPrompt() {
+  let response = prompt('Enter publication number');
+
+  if (response == null) {
+    return;
+  }
+
+  publication = parseInt(response);
+
+  if (publication > 0 ) { // && page <= Constants[publication].pages
+    renderImage();
+  } else {
+    alert('Invalid page.');
+  }
+}
+
 document.getElementById("pageNo").innerHTML = "Page " + imagePageNo;
+document.getElementById("publicationNo").innerHTML = "Publication " + publication;
 
 function minus5secs() {
   audio.currentTime = audio.currentTime - 5;

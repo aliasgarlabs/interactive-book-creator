@@ -67,14 +67,16 @@
       <div class="overlay">
         <div class="row">
           <div class="col-md-3">
-            <h5 id="tracking" style="color: white;">Page:</h5>
+            <h5 style="color: white;">Image:</h5>
           </div>
           <div class="col-md-3">
+            <button type="button" id="publicationNo" class="btn btn-link" onclick="gotopublicationPrompt()">Publication 1</button>
             <button type="button" id="pageNo" class="btn btn-link" onclick="gotopagePrompt()">Page 1</button>
+
           </div>
       
           <div class="col-md-3">
-            <h5 id="coordinates" style="color: white;">Audio:​</h5>
+            <h5 style="color: white;">Audio:​</h5>
           </div>
           <div class="col-md-3">
             <input type="file" id="audioFile" name="audioFile" onchange="onFileAudioUpload()" accept="audio/*">
