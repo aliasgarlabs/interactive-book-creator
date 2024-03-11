@@ -34,10 +34,99 @@ var urlParams = new URLSearchParams(window.location.search),
   },
   currentImage = {};
 
+
+  $(function () {
+
+    image.onerror = function(e) {
+      console.log("Not ok",e);
+    }
+  
+    image.onload = function () {
+      console.log("Image is loaded!");
+  
+      currentImage = {
+        x: this.width,
+        y: this.height,
+        naturalWidth : this.naturalWidth,
+        naturalHeight: this.naturalHeight
+      };
+      draw();
+    }
+  
+    $('#imageholder img').on('mousemove', null, [$('#horizontal'), $('#vertical')], function (e) {
+      e.data[1].css('left', e.offsetX == undefined ? e.originalEvent.layerX : e.offsetX);
+      e.data[0].css('top', e.offsetY == undefined ? e.originalEvent.layerY : e.offsetY);
+    });
+  
+    $(document).mousemove(function (e) {
+      if (e.pageX > currentImage.x || e.pageY > currentImage.y)
+        return;
+  
+      // e.data[1].css('left', e.offsetX==undefined?e.originalEvent.layerX:e.offsetX);
+      // e.data[0].css('top', e.offsetY==undefined?e.originalEvent.layerY:e.offsetY);
+  
+      var realX = parseInt(e.pageX * (currentImage.naturalWidth / currentImage.x)),
+        realY = parseInt(e.pageY * (currentImage.naturalHeight / currentImage.y));
+  
+      $('#coordinates').html('x: ' + realX + ' y : ' + realY);
+    });
+  
+  
+  
+    $(document).mousedown(function (e) {
+      console.log(`Page X:${e.pageX} Page Y:${e.pageY}`)
+      console.log(`Current X:${currentImage.x} Current Y:${currentImage.y}`)
+  
+      if(!currentImage.x || !currentImage.y)
+        return;
+  
+      if (e.pageX > currentImage.x || e.pageY > currentImage.y)
+        return;
+  
+      var realWidth = currentImage.naturalWidth;
+      var realHeight = currentImage.naturalHeight;
+      // alert(realWidth +"x"+ realHeight);
+  
+      var glyphID = collides(e.pageX, e.pageY);
+      if (glyphID) {
+        alert('collision: ' + glyphID);
+      } else {
+        console.log('no collision');
+      }
+  
+      if (_.find(glyphs, (glyph) => trackId == glyph.id)) {
+        alert("Please add audio track record for track " + trackId);
+        return;
+      }
+  
+      var realX = parseInt(e.pageX * (currentImage.naturalWidth / currentImage.x)),
+        realY = parseInt(e.pageY * (currentImage.naturalHeight / currentImage.y));
+  
+      if (!isTracking) {
+        currentGlyph = {
+          id: trackId,
+          page_number: imagePageNo,
+          min_x: realX,
+          min_y: realY
+        }
+      } else {
+        currentGlyph.max_x = realX;
+        currentGlyph.max_y = realY;
+        glyphs.push(currentGlyph);
+  
+        console.log(JSON.stringify(tracks));
+        insertTableRow(currentGlyph);
+        draw();
+      }
+      isTracking = !isTracking;
+      document.getElementById('tracking').innerHTML = isTracking ? "State: Tracking" : "State: Not Tracking";
+    });
+  })
+  
+
 var canvas = document.createElement('canvas'),
   newcanvas = document.createElement('canvas');
 
-initializeApp();
 
 let x = {
   "id": 6,
@@ -151,82 +240,6 @@ function setEndTimeForCurrentTrackID() {
 function updateCurrentTrackIDText() {
   document.getElementById("trackId").innerHTML = "Current Track ID: " + trackId;
 }
-
-$(function () {
-
-  image.onload = function () {
-    currentImage = {
-      x: this.width,
-      y: this.height,
-      naturalWidth : this.naturalWidth,
-      naturalHeight: this.naturalHeight
-    };
-    draw();
-  }
-
-  $('#imageholder img').on('mousemove', null, [$('#horizontal'), $('#vertical')], function (e) {
-    e.data[1].css('left', e.offsetX == undefined ? e.originalEvent.layerX : e.offsetX);
-    e.data[0].css('top', e.offsetY == undefined ? e.originalEvent.layerY : e.offsetY);
-  });
-
-  $(document).mousemove(function (e) {
-    if (e.pageX > currentImage.x || e.pageY > currentImage.y)
-      return;
-
-    // e.data[1].css('left', e.offsetX==undefined?e.originalEvent.layerX:e.offsetX);
-    // e.data[0].css('top', e.offsetY==undefined?e.originalEvent.layerY:e.offsetY);
-
-    var realX = parseInt(e.pageX * (currentImage.naturalWidth / currentImage.x)),
-      realY = parseInt(e.pageY * (currentImage.naturalHeight / currentImage.y));
-
-    $('#coordinates').html('x: ' + realX + ' y : ' + realY);
-  });
-
-
-
-  $(document).mousedown(function (e) {
-    if (e.pageX > currentImage.x || e.pageY > currentImage.y)
-      return;
-
-    var realWidth = currentImage.naturalWidth;
-    var realHeight = currentImage.naturalHeight;
-    // alert(realWidth +"x"+ realHeight);
-
-    var glyphID = collides(e.pageX, e.pageY);
-    if (glyphID) {
-      alert('collision: ' + glyphID);
-    } else {
-      console.log('no collision');
-    }
-
-    if (_.find(glyphs, (glyph) => trackId == glyph.id)) {
-      alert("Please add audio track record for track " + trackId);
-      return;
-    }
-
-    var realX = parseInt(e.pageX * (currentImage.naturalWidth / currentImage.x)),
-      realY = parseInt(e.pageY * (currentImage.naturalHeight / currentImage.y));
-
-    if (!isTracking) {
-      currentGlyph = {
-        id: trackId,
-        page_number: imagePageNo,
-        min_x: realX,
-        min_y: realY
-      }
-    } else {
-      currentGlyph.max_x = realX;
-      currentGlyph.max_y = realY;
-      glyphs.push(currentGlyph);
-
-      console.log(JSON.stringify(tracks));
-      insertTableRow(currentGlyph);
-      draw();
-    }
-    isTracking = !isTracking;
-    document.getElementById('tracking').innerHTML = isTracking ? "State: Tracking" : "State: Not Tracking";
-  });
-})
 
 function insertTableRow({ id, page_number, min_x, min_y, max_x, max_y, start_time, end_time }) {
   // Find a <table> element with id="myTable":
